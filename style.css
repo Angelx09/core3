@@ -22,3 +22,81 @@ body { background: #fff; color: #171717; font-family: Georgia, 'Times New Roman'
   .archive { width: 100%; height: 48dvh; border-top: 1px solid #eee; }
   .photo-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 }
+.tile {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: white;
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* ------------------
+   NUMBER
+------------------ */
+
+.photo-number {
+  position: absolute;
+
+  top: 10px;
+  left: 10px;
+
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+
+  color: white;
+
+  opacity: 0;
+
+  z-index: 2;
+
+  transition: opacity 0.2s ease;
+}
+
+
+/* Show number on hover */
+
+.tile:hover .photo-number {
+  opacity: 1;
+}
+
+
+/* Slightly darken image so number is readable */
+
+.tile:hover img {
+  opacity: 0.75;
+}
+
+
+/* ------------------
+   CLICKED IMAGE
+------------------ */
+
+.tile.selected img {
+  opacity: 1;
+}
+
+.tile.selected {
+  outline: 2px solid black;
+  outline-offset: -2px;
+}
+
+
+/* Blank checkerboard squares */
+
+.tile.blank {
+  background: white;
+  pointer-events: none;
+}
