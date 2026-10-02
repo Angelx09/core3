@@ -7,7 +7,7 @@ const captions = [
 
 // Put your own images in the images folder, named photo-01.jpg ... photo-52.jpg.
 const photos = Array.from({ length: 52 }, (_, i) => ({
-  src:S `images/photo-${String(i + 1).padStart(2, '0')}.jpg`,
+    src: `images/photo-${String(i + 1).padStart(2, '0')}.jpg`,
   caption: captions[i] ?? `Expression ${String(i + 1).padStart(2, '0')}`,
   alt: `Expression photograph ${i + 1}`
 }));
