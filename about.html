@@ -19,6 +19,34 @@
 
 
 <body class="about-body">
+    <!-- VIDEO BACKGROUND -->
+
+<!-- VIDEO BACKGROUND -->
+
+<video
+  id="about-video"
+  class="about-video"
+  autoplay
+  muted
+  loop
+  playsinline
+>
+  <source
+    src="images/about-background.mp4"
+    type="video/mp4"
+  >
+</video>
+
+
+<!-- SOUND BUTTON -->
+
+<button
+  id="sound-button"
+  class="sound-button"
+  type="button"
+>
+  SOUND ON
+</button>
 
   <main class="book-slideshow">
 
@@ -282,7 +310,61 @@
 
   </script>
 
+<body class="about-body">
+        <!-- VIDEO BACKGROUND -->
 
+    <video class="about-video" autoplay muted loop playsinline>
+        <source src="images/about-background.mp4" type="video/mp4">
+    </video>
+    <body class="about-body">
+
+
+  <video class="about-video" autoplay muted loop playsinline>
+    <source src="images/about-background.mp4" type="video/mp4" >
+  </video>
+
+
+
+
+  <main class="book-slideshow">
+
+  
+
+  </main>
+<script>
+
+  const video =
+    document.getElementById("about-video");
+
+  const soundButton =
+    document.getElementById("sound-button");
+
+
+  soundButton.addEventListener(
+    "click",
+    () => {
+
+      video.muted =
+        !video.muted;
+
+
+      if (video.muted) {
+
+        soundButton.textContent =
+          "SOUND ON";
+
+      } else {
+
+        soundButton.textContent =
+          "SOUND OFF";
+
+      }
+
+    }
+  );
+
+</script>
+</body>
 </body>
 
 </html>

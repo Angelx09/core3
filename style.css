@@ -564,18 +564,22 @@ body {
 /* ==========================================
    ABOUT PAGE
 ========================================== */
-
 .about-body {
   margin: 0;
 
-  background: white;
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  overflow: hidden;
+
+  background: black;
 
   font-family:
     Arial,
     sans-serif;
 }
-
-
 
 .book-slideshow {
   min-height: 100vh;
@@ -798,4 +802,71 @@ body {
     font-size: 18px;
   }
 
+}
+
+/* ==========================================
+   ABOUT VIDEO BACKGROUND
+========================================== */
+
+
+/* Keep slideshow above video */
+
+.book-slideshow {
+  position: relative;
+
+  z-index: 2;
+}
+
+
+/* Keep controls visible */
+
+.back-button,
+.slide-arrow,
+.slide-info {
+  position: relative;
+
+  z-index: 3;
+}
+.about-video {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  object-fit: cover;
+
+  z-index: 0;
+
+  opacity: 1;
+
+  filter: none;
+}
+.sound-button {
+  position: fixed;
+
+  bottom: 20px;
+  right: 20px;
+
+  z-index: 10;
+
+  border: none;
+
+  background: none;
+
+  color: white;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 10px;
+
+  letter-spacing: 0.12em;
+
+  cursor: pointer;
+}
+
+
+.sound-button:hover {
+  opacity: 0.5;
 }
