@@ -5,7 +5,8 @@
 const captions = [
   "An expression, a moment, a memory.",
   "The little things I never want to forget.",
-  "A face that says more than words."
+  "A face that says more than words.",
+  "MiMi"
 ];
 
 
@@ -15,7 +16,7 @@ const captions = [
 
 const photoFiles = [
   "photo-01.jpg",
-  "photo-02.jpg",
+  "photo-02.JPG",
   "photo-03.jpg",
   "photo-04.jpg",
   "photo-05.JPG",
