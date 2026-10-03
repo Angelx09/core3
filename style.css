@@ -846,27 +846,33 @@ body {
 .sound-button {
   position: fixed;
 
-  bottom: 20px;
+  top: 20px;
   right: 20px;
 
   z-index: 10;
 
   border: none;
-
   background: none;
 
   color: white;
 
   font-family: Arial, sans-serif;
-
   font-size: 10px;
-
   letter-spacing: 0.12em;
 
   cursor: pointer;
 }
 
-
 .sound-button:hover {
   opacity: 0.5;
+}
+.slide-image-container img {
+  display: block;
+
+  max-width: 100%;
+  max-height: 100%;
+
+  object-fit: contain;
+
+  cursor: pointer;
 }

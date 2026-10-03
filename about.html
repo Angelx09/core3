@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -15,38 +16,52 @@
     rel="stylesheet"
     href="style.css"
   >
+
 </head>
 
 
 <body class="about-body">
-    <!-- VIDEO BACKGROUND -->
 
-<!-- VIDEO BACKGROUND -->
 
-<video
-  id="about-video"
-  class="about-video"
-  autoplay
-  muted
-  loop
-  playsinline
->
-  <source
-    src="images/about-background.mp4"
-    type="video/mp4"
+  <!-- ======================================
+       VIDEO BACKGROUND
+  ======================================= -->
+
+  <video
+    id="about-video"
+    class="about-video"
+    autoplay
+    muted
+    loop
+    playsinline
   >
-</video>
+
+    <source
+      src="images/about-background.mp4"
+      type="video/mp4"
+    >
+
+  </video>
 
 
-<!-- SOUND BUTTON -->
 
-<button
-  id="sound-button"
-  class="sound-button"
-  type="button"
->
-  SOUND ON
-</button>
+  <!-- ======================================
+       SOUND BUTTON
+  ======================================= -->
+
+  <button
+    id="sound-button"
+    class="sound-button"
+    type="button"
+  >
+    SOUND ON
+  </button>
+
+
+
+  <!-- ======================================
+       BOOK
+  ======================================= -->
 
   <main class="book-slideshow">
 
@@ -62,20 +77,9 @@
 
 
 
-    <!-- SLIDESHOW -->
+    <!-- BOOK IMAGE -->
 
     <div class="slideshow-container">
-
-
-      <button
-        class="slide-arrow"
-        id="prev"
-        type="button"
-      >
-        ←
-      </button>
-
-
 
       <div class="slide-image-container">
 
@@ -87,22 +91,11 @@
 
       </div>
 
-
-
-      <button
-        class="slide-arrow"
-        id="next"
-        type="button"
-      >
-        →
-      </button>
-
-
     </div>
 
 
 
-    <!-- BOTTOM INFO -->
+    <!-- BOTTOM INFORMATION -->
 
     <div class="slide-info">
 
@@ -111,7 +104,7 @@
       </span>
 
       <span>
-        THE BOOK
+        MIDORI, 2026
       </span>
 
     </div>
@@ -121,14 +114,17 @@
 
 
 
+  <!-- ======================================
+       JAVASCRIPT
+  ======================================= -->
+
   <script>
 
-    // ======================================
+    // ==========================================
     // BOOK IMAGES
-    // ======================================
+    // ==========================================
 
     const bookImages = [
-
       "images/book-01.jpeg",
       "images/book-02.jpeg",
       "images/book-03.jpeg",
@@ -137,83 +133,65 @@
       "images/book-06.jpeg",
       "images/book-07.jpeg",
       "images/book-08.jpeg"
-
     ];
 
 
 
-    // ======================================
+    // ==========================================
     // ELEMENTS
-    // ======================================
+    // ==========================================
 
     const slideImage =
-      document.getElementById(
-        "book-slide"
-      );
-
+      document.getElementById("book-slide");
 
     const slideNumber =
-      document.getElementById(
-        "slide-number"
-      );
+      document.getElementById("slide-number");
 
+    const video =
+      document.getElementById("about-video");
 
-    const nextButton =
-      document.getElementById(
-        "next"
-      );
-
-
-    const prevButton =
-      document.getElementById(
-        "prev"
-      );
+    const soundButton =
+      document.getElementById("sound-button");
 
 
 
-    // ======================================
-    // CURRENT SLIDE
-    // ======================================
+    // ==========================================
+    // CURRENT BOOK IMAGE
+    // ==========================================
 
     let currentSlide = 0;
 
 
 
-    // ======================================
-    // UPDATE SLIDE
-    // ======================================
+    // ==========================================
+    // SHOW BOOK IMAGE
+    // ==========================================
 
-    function updateSlide() {
+    function showSlide() {
 
       slideImage.src =
         bookImages[currentSlide];
 
-
       slideNumber.textContent =
-        String(
-          currentSlide + 1
-        ).padStart(2, "0")
+        String(currentSlide + 1).padStart(2, "0")
         +
         " / "
         +
-        String(
-          bookImages.length
-        ).padStart(2, "0");
+        String(bookImages.length).padStart(2, "0");
 
     }
 
 
 
-    // ======================================
-    // NEXT
-    // ======================================
+    // ==========================================
+    // CLICK IMAGE → NEXT IMAGE
+    // ==========================================
 
-    nextButton.addEventListener(
+    slideImage.addEventListener(
       "click",
-      () => {
+      function () {
 
         currentSlide++;
-
 
         if (
           currentSlide >=
@@ -224,66 +202,51 @@
 
         }
 
-
-        updateSlide();
+        showSlide();
 
       }
     );
 
 
 
-    // ======================================
-    // PREVIOUS
-    // ======================================
+    // ==========================================
+    // MAKE BOOK IMAGE CLICKABLE
+    // ==========================================
 
-    prevButton.addEventListener(
+    slideImage.style.cursor =
+      "pointer";
+
+
+
+    // ==========================================
+    // SOUND ON / OFF
+    // ==========================================
+
+    soundButton.addEventListener(
       "click",
-      () => {
+      function () {
 
-        currentSlide--;
+        if (video.muted) {
 
+          // TURN SOUND ON
 
-        if (
-          currentSlide < 0
-        ) {
+          video.muted = false;
 
-          currentSlide =
-            bookImages.length - 1;
+          video.volume = 1;
 
-        }
+          video.play();
 
+          soundButton.textContent =
+            "SOUND OFF";
 
-        updateSlide();
+        } else {
 
-      }
-    );
+          // TURN SOUND OFF
 
+          video.muted = true;
 
-
-    // ======================================
-    // KEYBOARD ARROWS
-    // ======================================
-
-    document.addEventListener(
-      "keydown",
-      (event) => {
-
-        if (
-          event.key ===
-          "ArrowRight"
-        ) {
-
-          nextButton.click();
-
-        }
-
-
-        if (
-          event.key ===
-          "ArrowLeft"
-        ) {
-
-          prevButton.click();
+          soundButton.textContent =
+            "SOUND ON";
 
         }
 
@@ -292,79 +255,16 @@
 
 
 
-    // ======================================
-    // IMAGE ERROR CHECK
-    // ======================================
+    // ==========================================
+    // START
+    // ==========================================
 
-    slideImage.addEventListener(
-      "error",
-      () => {
+    showSlide();
 
-        console.log(
-          "IMAGE NOT FOUND:",
-          slideImage.src
-        );
-
-      }
-    );
 
   </script>
 
-<body class="about-body">
-        <!-- VIDEO BACKGROUND -->
 
-    <video class="about-video" autoplay muted loop playsinline>
-        <source src="images/about-background.mp4" type="video/mp4">
-    </video>
-    <body class="about-body">
-
-
-  <video class="about-video" autoplay muted loop playsinline>
-    <source src="images/about-background.mp4" type="video/mp4" >
-  </video>
-
-
-
-
-  <main class="book-slideshow">
-
-  
-
-  </main>
-<script>
-
-  const video =
-    document.getElementById("about-video");
-
-  const soundButton =
-    document.getElementById("sound-button");
-
-
-  soundButton.addEventListener(
-    "click",
-    () => {
-
-      video.muted =
-        !video.muted;
-
-
-      if (video.muted) {
-
-        soundButton.textContent =
-          "SOUND ON";
-
-      } else {
-
-        soundButton.textContent =
-          "SOUND OFF";
-
-      }
-
-    }
-  );
-
-</script>
-</body>
 </body>
 
 </html>
