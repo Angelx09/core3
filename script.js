@@ -9,21 +9,84 @@ const captions = [
 ];
 
 
-const photos = Array.from(
-  { length: 52 },
-  (_, i) => ({
-    src: `images/photo-${String(i + 1).padStart(2, "0")}.jpg`,
-    caption:
-      captions[i] ??
-      `Expression ${String(i + 1).padStart(2, "0")}`,
-    alt:
-      `Expression photograph ${i + 1}`
-  })
-);
+// ==========================================
+// EXACT PHOTO FILE NAMES
+// ==========================================
+
+const photoFiles = [
+  "photo-01.jpg",
+  "photo-02.jpg",
+  "photo-03.jpg",
+  "photo-04.jpg",
+  "photo-05.JPG",
+  "photo-06.JPG",
+  "photo-07.JPG",
+  "photo-08.JPG",
+  "photo-09.JPG",
+  "photo-10.jpg",
+  "photo-11.JPG",
+  "photo-12.JPG",
+  "photo-13.JPG",
+  "photo-14.JPG",
+  "photo-15.JPG",
+  "photo-16.jpg",
+  "photo-17.JPG",
+  "photo-18.JPG",
+  "photo-19.JPG",
+  "photo-20.JPG",
+  "photo-21.JPG",
+  "photo-22.JPG",
+  "photo-23.JPG",
+  "photo-24.JPG",
+  "photo-25.JPG",
+  "photo-26.JPG",
+  "photo-27.JPG",
+  "photo-28.JPG",
+  "photo-29.JPG",
+  "photo-30.JPG",
+  "photo-31.jpg",
+  "photo-32.JPG",
+  "photo-33.jpg",
+  "photo-34.jpg",
+  "photo-35.jpg",
+  "photo-36.JPG",
+  "photo-37.JPG",
+  "photo-38.JPG",
+  "photo-39.JPG",
+  "photo-40.JPG",
+  "photo-41.jpg",
+  "photo-42.jpg",
+  "photo-43.jpg",
+  "photo-44.jpg",
+  "photo-45.JPG",
+  "photo-46.JPG",
+  "photo-47.JPG",
+  "photo-48.jpg",
+  "photo-49.JPG",
+  "photo-50.JPG",
+  "photo-51.JPG",
+  "photo-52.JPG"
+];
 
 
 // ==========================================
-// ELEMENTS
+// CREATE PHOTO DATA
+// ==========================================
+
+const photos = photoFiles.map((filename, i) => ({
+  src: `images/${filename}`,
+
+  caption:
+    captions[i] ??
+    `Expression ${String(i + 1).padStart(2, "0")}`,
+
+  alt:
+    `Expression photograph ${i + 1}`
+}));
+
+
+// ==========================================
+// GET PAGE ELEMENTS
 // ==========================================
 
 const grid =
@@ -46,7 +109,7 @@ const loadingText =
 
 
 // ==========================================
-// GALLERY
+// GALLERY SETTINGS
 // ==========================================
 
 const columns = 8;
@@ -55,59 +118,59 @@ let selectedButton = null;
 let selectedPhoto = photos[0];
 
 
+// ==========================================
+// SHOW PHOTO ON RIGHT
+// ==========================================
+
 function showPhoto(photo) {
 
+  if (!featuredImage || !featuredCaption) {
+    return;
+  }
+
   featuredImage.src = photo.src;
-
   featuredImage.alt = photo.alt;
-
-  featuredCaption.textContent =
-    photo.caption;
-
+  featuredCaption.textContent = photo.caption;
 }
 
+
+// ==========================================
+// SELECT PHOTO
+// ==========================================
 
 function selectPhoto(photo, button) {
 
   if (selectedButton) {
 
-    selectedButton.classList.remove(
-      "selected"
-    );
+    selectedButton.classList.remove("selected");
 
     selectedButton.setAttribute(
       "aria-pressed",
       "false"
     );
-
   }
 
-
   selectedPhoto = photo;
-
   selectedButton = button;
 
-
-  button.classList.add(
-    "selected"
-  );
+  button.classList.add("selected");
 
   button.setAttribute(
     "aria-pressed",
     "true"
   );
 
-
   showPhoto(photo);
-
 }
 
 
 // ==========================================
-// GRID WAVE
+// CLICK WAVE
 // ==========================================
 
 function createWave() {
+
+  if (!grid) return;
 
   const tiles = [
     ...document.querySelectorAll(
@@ -115,10 +178,8 @@ function createWave() {
     )
   ];
 
-
   const gridRect =
     grid.getBoundingClientRect();
-
 
   tiles.forEach((tile) => {
 
@@ -126,258 +187,215 @@ function createWave() {
       tile.getBoundingClientRect();
 
     const horizontalPosition =
-      rect.left -
-      gridRect.left;
+      rect.left - gridRect.left;
 
     const delay =
       horizontalPosition * 1.2;
 
-
-    tile.classList.remove(
-      "wave"
-    );
+    tile.classList.remove("wave");
 
     void tile.offsetWidth;
-
 
     tile.style.animationDelay =
       `${delay}ms`;
 
-    tile.classList.add(
-      "wave"
-    );
+    tile.classList.add("wave");
 
+    setTimeout(() => {
 
-    setTimeout(
-      () => {
+      tile.classList.remove("wave");
 
-        tile.classList.remove(
-          "wave"
-        );
+      tile.style.animationDelay = "";
 
-        tile.style.animationDelay =
-          "";
-
-      },
-
-      delay + 1000
-    );
+    }, delay + 1000);
 
   });
-
 }
 
 
 // ==========================================
-// CREATE CHECKERBOARD
+// BUILD CHECKERBOARD GRID
 // ==========================================
 
-let photoIndex = 0;
+if (grid) {
 
-
-for (
-  let row = 0;
-  photoIndex < photos.length;
-  row++
-) {
+  let photoIndex = 0;
 
   for (
-    let col = 0;
-    col < columns;
-    col++
+    let row = 0;
+    photoIndex < photos.length;
+    row++
   ) {
 
-    // BLANK CHECKERBOARD SPACE
+    for (
+      let col = 0;
+      col < columns;
+      col++
+    ) {
 
-    if ((row + col) % 2 !== 0) {
+      // EMPTY CHECKERBOARD SQUARE
 
-      const blank =
-        document.createElement("div");
+      if ((row + col) % 2 !== 0) {
 
-      blank.className =
-        "tile blank";
+        const blank =
+          document.createElement("div");
 
-      blank.setAttribute(
-        "aria-hidden",
-        "true"
-      );
+        blank.className =
+          "tile blank";
 
-      grid.appendChild(blank);
-
-      continue;
-
-    }
-
-
-    // PHOTO
-
-    const photo =
-      photos[photoIndex];
-
-
-    if (!photo) {
-      break;
-    }
-
-
-    const currentNumber =
-      String(
-        photoIndex + 1
-      ).padStart(2, "0");
-
-
-    photoIndex++;
-
-
-    const button =
-      document.createElement(
-        "button"
-      );
-
-
-    button.className =
-      "tile";
-
-    button.type =
-      "button";
-
-
-    button.setAttribute(
-      "aria-label",
-      `View photograph ${currentNumber}`
-    );
-
-
-    button.setAttribute(
-      "aria-pressed",
-      "false"
-    );
-
-
-    // IMAGE
-
-    const image =
-      document.createElement(
-        "img"
-      );
-
-
-    image.src =
-      photo.src;
-
-    image.alt =
-      "";
-
-    image.loading =
-      photoIndex > 12
-        ? "lazy"
-        : "eager";
-
-
-    // NUMBER
-
-    const number =
-      document.createElement(
-        "span"
-      );
-
-
-    number.className =
-      "photo-number";
-
-    number.textContent =
-      currentNumber;
-
-
-    button.appendChild(
-      image
-    );
-
-    button.appendChild(
-      number
-    );
-
-
-    // HOVER
-
-    button.addEventListener(
-      "mouseenter",
-      () => {
-
-        showPhoto(photo);
-
-      }
-    );
-
-
-    button.addEventListener(
-      "mouseleave",
-      () => {
-
-        showPhoto(
-          selectedPhoto
+        blank.setAttribute(
+          "aria-hidden",
+          "true"
         );
 
+        grid.appendChild(blank);
+
+        continue;
       }
-    );
 
 
-    // CLICK
+      // PHOTO
 
-    button.addEventListener(
-      "click",
-      () => {
+      const photo =
+        photos[photoIndex];
+
+      if (!photo) {
+        break;
+      }
+
+      const currentNumber =
+        String(photoIndex + 1)
+          .padStart(2, "0");
+
+      photoIndex++;
+
+
+      // BUTTON
+
+      const button =
+        document.createElement("button");
+
+      button.className =
+        "tile";
+
+      button.type =
+        "button";
+
+      button.setAttribute(
+        "aria-label",
+        `View photograph ${currentNumber}`
+      );
+
+      button.setAttribute(
+        "aria-pressed",
+        "false"
+      );
+
+
+      // IMAGE
+
+      const image =
+        document.createElement("img");
+
+      image.src =
+        photo.src;
+
+      image.alt = "";
+
+      image.loading =
+        photoIndex > 12
+          ? "lazy"
+          : "eager";
+
+
+      // PHOTO NUMBER
+
+      const number =
+        document.createElement("span");
+
+      number.className =
+        "photo-number";
+
+      number.textContent =
+        currentNumber;
+
+
+      button.appendChild(image);
+      button.appendChild(number);
+
+
+      // HOVER PHOTO
+
+      button.addEventListener(
+        "mouseenter",
+        () => {
+
+          showPhoto(photo);
+
+        }
+      );
+
+
+      // RETURN TO SELECTED PHOTO
+
+      button.addEventListener(
+        "mouseleave",
+        () => {
+
+          showPhoto(selectedPhoto);
+
+        }
+      );
+
+
+      // CLICK PHOTO
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          selectPhoto(
+            photo,
+            button
+          );
+
+          createWave();
+
+        }
+      );
+
+
+      grid.appendChild(button);
+
+
+      // SELECT FIRST IMAGE
+
+      if (photoIndex === 1) {
 
         selectPhoto(
           photo,
           button
         );
 
-        createWave();
-
       }
-    );
-
-
-    grid.appendChild(
-      button
-    );
-
-
-    // FIRST PHOTO SELECTED
-
-    if (photoIndex === 1) {
-
-      selectPhoto(
-        photo,
-        button
-      );
 
     }
-
   }
-
 }
 
 
 // ==========================================
-// STITCH SCROLLBAR
+// STITCH SCROLL INDICATOR
 // ==========================================
 
 const archiveSection =
-  document.querySelector(
-    ".archive"
-  );
+  document.querySelector(".archive");
 
 const stitchTrack =
-  document.querySelector(
-    ".stitch-scroll"
-  );
+  document.querySelector(".stitch-scroll");
 
 const stitchLine =
-  document.querySelector(
-    ".stitch-line"
-  );
+  document.querySelector(".stitch-line");
 
 
 function updateStitchScroll() {
@@ -387,47 +405,41 @@ function updateStitchScroll() {
     !stitchTrack ||
     !stitchLine
   ) {
-
     return;
-
   }
-
 
   const maxScroll =
     archiveSection.scrollHeight -
     archiveSection.clientHeight;
 
-
   if (maxScroll <= 0) {
 
-    stitchLine.style.top =
-      "0px";
+    stitchLine.style.top = "0px";
 
     return;
-
   }
-
 
   const progress =
     archiveSection.scrollTop /
     maxScroll;
 
-
   const maxMovement =
     stitchTrack.clientHeight -
     stitchLine.offsetHeight;
 
-
   stitchLine.style.top =
     `${progress * maxMovement}px`;
-
 }
 
 
-archiveSection.addEventListener(
-  "scroll",
-  updateStitchScroll
-);
+if (archiveSection) {
+
+  archiveSection.addEventListener(
+    "scroll",
+    updateStitchScroll
+  );
+
+}
 
 
 window.addEventListener(
@@ -448,42 +460,36 @@ const loaderPhotoCount = 44;
 const introImages = [];
 
 
-for (
-  let i = 0;
-  i < loaderPhotoCount;
-  i++
-) {
+// CREATE LOADER IMAGES
 
-  const image =
-    document.createElement(
-      "img"
-    );
+if (loaderPhotos) {
 
+  for (
+    let i = 0;
+    i < loaderPhotoCount;
+    i++
+  ) {
 
-  image.src =
-    photos[i].src;
+    const image =
+      document.createElement("img");
 
-  image.alt =
-    "";
+    image.src =
+      photos[i].src;
 
-  image.className =
-    "loader-photo";
+    image.alt = "";
 
+    image.className =
+      "loader-photo";
 
-  loaderPhotos.appendChild(
-    image
-  );
+    loaderPhotos.appendChild(image);
 
-
-  introImages.push(
-    image
-  );
-
+    introImages.push(image);
+  }
 }
 
 
 // ==========================================
-// MESSY PILE POSITIONS
+// MESSY PHOTO PILE
 // ==========================================
 
 const pilePositions = [
@@ -539,22 +545,34 @@ const pilePositions = [
   {x:42,y:59,w:48,h:64,r:8},
   {x:58,y:59,w:50,h:66,r:-9},
   {x:51,y:69,w:48,h:64,r:7}
-
 ];
 
 
 // ==========================================
-// MIMI PATTERN
+// MIMI LETTER PATTERN
 // ==========================================
 
 const mimiPattern = [
 
   // M
-  [0,0],[4,0],
-  [0,1],[1,1],[3,1],[4,1],
-  [0,2],[2,2],[4,2],
-  [0,3],[4,3],
-  [0,4],[4,4],
+  [0,0],
+  [4,0],
+
+  [0,1],
+  [1,1],
+  [3,1],
+  [4,1],
+
+  [0,2],
+  [2,2],
+  [4,2],
+
+  [0,3],
+  [4,3],
+
+  [0,4],
+  [4,4],
+
 
   // I
   [6,0],
@@ -563,12 +581,26 @@ const mimiPattern = [
   [6,3],
   [6,4],
 
+
   // M
-  [8,0],[12,0],
-  [8,1],[9,1],[11,1],[12,1],
-  [8,2],[10,2],[12,2],
-  [8,3],[12,3],
-  [8,4],[12,4],
+  [8,0],
+  [12,0],
+
+  [8,1],
+  [9,1],
+  [11,1],
+  [12,1],
+
+  [8,2],
+  [10,2],
+  [12,2],
+
+  [8,3],
+  [12,3],
+
+  [8,4],
+  [12,4],
+
 
   // I
   [14,0],
@@ -581,56 +613,39 @@ const mimiPattern = [
 
 
 // ==========================================
-// MIMI POSITIONS
+// CALCULATE MIMI POSITION
 // ==========================================
 
 function getMimiPositions() {
 
   const tileWidth = 48;
-
   const tileHeight = 62;
 
   const columns = 15;
-
   const rows = 5;
 
-
   const wordWidth =
-    columns *
-    tileWidth;
-
+    columns * tileWidth;
 
   const wordHeight =
-    rows *
-    tileHeight;
-
+    rows * tileHeight;
 
   const startX =
-    (
-      window.innerWidth -
-      wordWidth
-    ) / 2;
-
+    (window.innerWidth - wordWidth) / 2;
 
   const startY =
-    (
-      window.innerHeight -
-      wordHeight
-    ) / 2;
-
+    (window.innerHeight - wordHeight) / 2;
 
   return mimiPattern.map(
     ([column, row]) => ({
 
       x:
         startX +
-        column *
-        tileWidth,
+        column * tileWidth,
 
       y:
         startY +
-        row *
-        tileHeight,
+        row * tileHeight,
 
       w:
         tileWidth,
@@ -640,7 +655,6 @@ function getMimiPositions() {
 
     })
   );
-
 }
 
 
@@ -653,46 +667,36 @@ function prepareLoader() {
   introImages.forEach(
     (image, index) => {
 
-      image.style.left =
-        "50%";
+      image.style.left = "50%";
+      image.style.top = "50%";
 
-      image.style.top =
-        "50%";
+      image.style.width = "30px";
+      image.style.height = "40px";
 
-      image.style.width =
-        "30px";
-
-      image.style.height =
-        "40px";
-
-      image.style.opacity =
-        "0";
+      image.style.opacity = "0";
 
       image.style.zIndex =
-        index;
-
+        String(index);
 
       image.style.transform =
-        `
-        translate(-50%, -50%)
-        scale(.4)
-        `;
-
+        "translate(-50%, -50%) scale(.4)";
     }
   );
-
 }
 
 
 // ==========================================
-// BUILD PILE
+// BUILD MESSY PILE
 // ==========================================
 
 function buildPile() {
 
-  loadingText.textContent =
-    "LOADING ARCHIVE";
+  if (loadingText) {
 
+    loadingText.textContent =
+      "LOADING ARCHIVE";
+
+  }
 
   introImages.forEach(
     (image, index) => {
@@ -700,11 +704,7 @@ function buildPile() {
       const p =
         pilePositions[index];
 
-
-      if (!p) {
-        return;
-      }
-
+      if (!p) return;
 
       setTimeout(
         () => {
@@ -725,12 +725,7 @@ function buildPile() {
             "1";
 
           image.style.transform =
-            `
-            translate(-50%, -50%)
-            rotate(${p.r}deg)
-            scale(1)
-            `;
-
+            `translate(-50%, -50%) rotate(${p.r}deg) scale(1)`;
 
           image.style.zIndex =
             String(
@@ -745,7 +740,6 @@ function buildPile() {
 
     }
   );
-
 }
 
 
@@ -755,13 +749,15 @@ function buildPile() {
 
 function formMimi() {
 
-  loadingText.textContent =
-    "ORGANIZING";
+  if (loadingText) {
 
+    loadingText.textContent =
+      "ORGANIZING";
+
+  }
 
   const positions =
     getMimiPositions();
-
 
   introImages.forEach(
     (image, index) => {
@@ -769,16 +765,12 @@ function formMimi() {
       const p =
         positions[index];
 
-
       if (!p) {
 
-        image.style.opacity =
-          "0";
+        image.style.opacity = "0";
 
         return;
-
       }
-
 
       image.style.left =
         `${p.x}px`;
@@ -798,29 +790,26 @@ function formMimi() {
       image.style.zIndex =
         "1";
 
-
       image.style.transform =
-        `
-        translate(0, 0)
-        rotate(0deg)
-        scale(1)
-        `;
+        "translate(0, 0) rotate(0deg) scale(1)";
 
     }
   );
-
 }
 
 
 // ==========================================
-// BREAK APART
+// BREAK MIMI APART
 // ==========================================
 
 function breakApart() {
 
-  loadingText.textContent =
-    "52 MOMENTS";
+  if (loadingText) {
 
+    loadingText.textContent =
+      "52 MOMENTS";
+
+  }
 
   introImages.forEach(
     (image, index) => {
@@ -830,25 +819,18 @@ function breakApart() {
           ? -1
           : 1;
 
-
       const x =
         50 +
         side *
-        (
-          30 +
-          Math.random() * 35
-        );
-
+        (30 + Math.random() * 35);
 
       const y =
         10 +
         Math.random() * 80;
 
-
       const rotation =
         -20 +
         Math.random() * 40;
-
 
       image.style.left =
         `${x}%`;
@@ -856,68 +838,69 @@ function breakApart() {
       image.style.top =
         `${y}%`;
 
-
       image.style.transform =
-        `
-        translate(-50%, -50%)
-        rotate(${rotation}deg)
-        scale(.65)
-        `;
-
+        `translate(-50%, -50%) rotate(${rotation}deg) scale(.65)`;
 
       image.style.opacity =
         "0";
 
     }
   );
-
 }
 
 
 // ==========================================
-// FINISH LOADER
+// SHOW MAIN PAGE
 // ==========================================
 
 function finishLoader() {
 
+  if (!loader) return;
+
   loader.classList.add(
     "finished"
   );
-
 }
 
 
 // ==========================================
-// RUN LOADER
+// RUN LOADING ANIMATION
 // ==========================================
 
 function runLoader() {
 
+  // If loader isn't on the page,
+  // don't run loader animation.
+
+  if (!loader || !loaderPhotos) {
+    return;
+  }
+
   prepareLoader();
 
-
+  // Messy pile
   setTimeout(
     buildPile,
     300
   );
 
-
+  // Form MIMI
   setTimeout(
     formMimi,
-    2500
+    2200
   );
 
+  // Quickly scatter
   setTimeout(
     breakApart,
-    4800
+    3500
   );
 
-
+  // Reveal main gallery
   setTimeout(
     finishLoader,
-    6200
+    4100
   );
-
 }
 
 
@@ -929,32 +912,3 @@ window.addEventListener(
   "load",
   runLoader
 );
-function runLoader() {
-
-  prepareLoader();
-
-  // messy pile
-  setTimeout(
-    buildPile,
-    300
-  );
-
-  // form MIMI
-  setTimeout(
-    formMimi,
-    2200
-  );
-
-  // quickly break away
-  setTimeout(
-    breakApart,
-    3500
-  );
-
-  // reveal main page
-  setTimeout(
-    finishLoader,
-    4100
-  );
-
-}
