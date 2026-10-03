@@ -1,24 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>Expressions — Photo Archive</title>
-  <link rel="stylesheet" href="style.css">
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 </head>
 
+
 <body>
-  <main class="gallery">
+
+
+  <!-- =====================================
+       LOADING SCREEN
+  ====================================== -->
+
+  <div
+    id="loader"
+    class="loader"
+  >
+
+    <div
+      id="loader-photos"
+      class="loader-photos"
+    ></div>
+
+
+    <div class="loader-bottom">
+
+      <span>
+        MIMI
+      </span>
+
+      <span id="loading-text">
+        LOADING ARCHIVE
+      </span>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================
+       MAIN WEBSITE
+  ====================================== -->
+
+  <main
+    id="gallery"
+    class="gallery"
+  >
+
+
+    <!-- LEFT ARCHIVE -->
+
     <section class="archive">
-      <div id="photo-grid" class="photo-grid"></div>
+
+      <div
+        id="photo-grid"
+        class="photo-grid"
+      ></div>
+
+
+      <!-- STITCH SCROLLBAR -->
+
+      <div class="stitch-scroll">
+
+        <div class="stitch-line"></div>
+
+      </div>
+
     </section>
+
+
+
+    <!-- RIGHT VIEWER -->
 
     <section class="viewer">
+
+
+      <!-- BOOK LINK -->
+
+      <a
+        href="about.html"
+        class="book-link"
+      >
+
+        <img
+          src="images/book.jpg"
+          alt="Learn about the book"
+        >
+
+      </a>
+
+
+
+      <!-- FEATURED PHOTO -->
+
       <figure class="selected-photo">
-        <img id="featured-image" src="images/photo-01.jpg" alt="Selected expression">
-        <figcaption id="featured-caption">An expression, a moment, a memory.</figcaption>
+
+        <img
+          id="featured-image"
+          src="images/photo-01.jpg"
+          alt="Selected expression"
+        >
+
+        <figcaption
+          id="featured-caption"
+        >
+          An expression, a moment, a memory.
+        </figcaption>
+
       </figure>
+
+
     </section>
+
+
   </main>
 
+
+
   <script src="script.js"></script>
+
+</body>
+
+</html>

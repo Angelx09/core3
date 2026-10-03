@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>About the Book</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+</head>
+
+
+<body class="about-body">
+
+  <main class="book-slideshow">
+
+
+    <!-- BACK -->
+
+    <a
+      href="index.html"
+      class="back-button"
+    >
+      ← BACK
+    </a>
+
+
+
+    <!-- SLIDESHOW -->
+
+    <div class="slideshow-container">
+
+
+      <button
+        class="slide-arrow"
+        id="prev"
+        type="button"
+      >
+        ←
+      </button>
+
+
+
+      <div class="slide-image-container">
+
+        <img
+          id="book-slide"
+          src="images/book-01.jpeg"
+          alt="Photograph of the physical book"
+        >
+
+      </div>
+
+
+
+      <button
+        class="slide-arrow"
+        id="next"
+        type="button"
+      >
+        →
+      </button>
+
+
+    </div>
+
+
+
+    <!-- BOTTOM INFO -->
+
+    <div class="slide-info">
+
+      <span id="slide-number">
+        01 / 08
+      </span>
+
+      <span>
+        THE BOOK
+      </span>
+
+    </div>
+
+
+  </main>
+
+
+
+  <script>
+
+    // ======================================
+    // BOOK IMAGES
+    // ======================================
+
+    const bookImages = [
+
+      "images/book-01.jpeg",
+      "images/book-02.jpeg",
+      "images/book-03.jpeg",
+      "images/book-04.jpeg",
+      "images/book-05.jpeg",
+      "images/book-06.jpeg",
+      "images/book-07.jpeg",
+      "images/book-08.jpeg"
+
+    ];
+
+
+
+    // ======================================
+    // ELEMENTS
+    // ======================================
+
+    const slideImage =
+      document.getElementById(
+        "book-slide"
+      );
+
+
+    const slideNumber =
+      document.getElementById(
+        "slide-number"
+      );
+
+
+    const nextButton =
+      document.getElementById(
+        "next"
+      );
+
+
+    const prevButton =
+      document.getElementById(
+        "prev"
+      );
+
+
+
+    // ======================================
+    // CURRENT SLIDE
+    // ======================================
+
+    let currentSlide = 0;
+
+
+
+    // ======================================
+    // UPDATE SLIDE
+    // ======================================
+
+    function updateSlide() {
+
+      slideImage.src =
+        bookImages[currentSlide];
+
+
+      slideNumber.textContent =
+        String(
+          currentSlide + 1
+        ).padStart(2, "0")
+        +
+        " / "
+        +
+        String(
+          bookImages.length
+        ).padStart(2, "0");
+
+    }
+
+
+
+    // ======================================
+    // NEXT
+    // ======================================
+
+    nextButton.addEventListener(
+      "click",
+      () => {
+
+        currentSlide++;
+
+
+        if (
+          currentSlide >=
+          bookImages.length
+        ) {
+
+          currentSlide = 0;
+
+        }
+
+
+        updateSlide();
+
+      }
+    );
+
+
+
+    // ======================================
+    // PREVIOUS
+    // ======================================
+
+    prevButton.addEventListener(
+      "click",
+      () => {
+
+        currentSlide--;
+
+
+        if (
+          currentSlide < 0
+        ) {
+
+          currentSlide =
+            bookImages.length - 1;
+
+        }
+
+
+        updateSlide();
+
+      }
+    );
+
+
+
+    // ======================================
+    // KEYBOARD ARROWS
+    // ======================================
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+
+        if (
+          event.key ===
+          "ArrowRight"
+        ) {
+
+          nextButton.click();
+
+        }
+
+
+        if (
+          event.key ===
+          "ArrowLeft"
+        ) {
+
+          prevButton.click();
+
+        }
+
+      }
+    );
+
+
+
+    // ======================================
+    // IMAGE ERROR CHECK
+    // ======================================
+
+    slideImage.addEventListener(
+      "error",
+      () => {
+
+        console.log(
+          "IMAGE NOT FOUND:",
+          slideImage.src
+        );
+
+      }
+    );
+
+  </script>
+
+
+</body>
+
+</html>
