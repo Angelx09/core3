@@ -1,7 +1,7 @@
 /* ==========================================
    GLOBAL
 ========================================== */
-
+@import url("https://use.typekit.net/wcs7vbf.css");
 * {
   box-sizing: border-box;
 }
@@ -22,7 +22,7 @@ body {
   color: #171717;
 
   font-family:
-    Georgia,
+    "neue-haas-unica",
     "Times New Roman",
     serif;
 
@@ -403,10 +403,10 @@ body {
 .book-link {
   position: absolute;
 
-  top: 8px;
-  right: 8px;
+  top: 5px;
+  right: 5px;
 
-  width: 45px;
+  width: 90px;
 
   height: auto;
 
