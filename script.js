@@ -1,5 +1,10 @@
 // ==========================================
-// PHOTO ARCHIVE
+// MIMI PHOTO ARCHIVE
+// ==========================================
+
+
+// ==========================================
+// CAPTIONS
 // ==========================================
 
 const captions = [
@@ -71,23 +76,23 @@ const photoFiles = [
 
 
 // ==========================================
-// CREATE PHOTO DATA
+// PHOTO DATA
 // ==========================================
 
-const photos = photoFiles.map((filename, i) => ({
+const photos = photoFiles.map((filename, index) => ({
   src: `images/${filename}`,
 
   caption:
-    captions[i] ??
-    `Expression ${String(i + 1).padStart(2, "0")}`,
+    captions[index] ??
+    `Expression ${String(index + 1).padStart(2, "0")}`,
 
   alt:
-    `Expression photograph ${i + 1}`
+    `Expression photograph ${index + 1}`
 }));
 
 
 // ==========================================
-// GET PAGE ELEMENTS
+// PAGE ELEMENTS
 // ==========================================
 
 const grid =
@@ -98,6 +103,15 @@ const featuredImage =
 
 const featuredCaption =
   document.getElementById("featured-caption");
+
+const archiveSection =
+  document.querySelector(".archive");
+
+const stitchTrack =
+  document.querySelector(".stitch-scroll");
+
+const stitchLine =
+  document.querySelector(".stitch-line");
 
 const loader =
   document.getElementById("loader");
@@ -110,13 +124,13 @@ const loadingText =
 
 
 // ==========================================
-// GALLERY SETTINGS
+// SETTINGS
 // ==========================================
 
 const columns = 8;
 
-let selectedButton = null;
 let selectedPhoto = photos[0];
+let selectedButton = null;
 
 
 // ==========================================
@@ -125,13 +139,17 @@ let selectedPhoto = photos[0];
 
 function showPhoto(photo) {
 
-  if (!featuredImage || !featuredCaption) {
-    return;
+  if (!photo) return;
+
+  if (featuredImage) {
+    featuredImage.src = photo.src;
+    featuredImage.alt = photo.alt;
   }
 
-  featuredImage.src = photo.src;
-  featuredImage.alt = photo.alt;
-  featuredCaption.textContent = photo.caption;
+  if (featuredCaption) {
+    featuredCaption.textContent =
+      photo.caption;
+  }
 }
 
 
@@ -143,7 +161,9 @@ function selectPhoto(photo, button) {
 
   if (selectedButton) {
 
-    selectedButton.classList.remove("selected");
+    selectedButton.classList.remove(
+      "selected"
+    );
 
     selectedButton.setAttribute(
       "aria-pressed",
@@ -154,12 +174,17 @@ function selectPhoto(photo, button) {
   selectedPhoto = photo;
   selectedButton = button;
 
-  button.classList.add("selected");
+  if (button) {
 
-  button.setAttribute(
-    "aria-pressed",
-    "true"
-  );
+    button.classList.add(
+      "selected"
+    );
+
+    button.setAttribute(
+      "aria-pressed",
+      "true"
+    );
+  }
 
   showPhoto(photo);
 }
@@ -173,54 +198,58 @@ function createWave() {
 
   if (!grid) return;
 
-  const tiles = [
-    ...document.querySelectorAll(
-      ".tile:not(.blank)"
-    )
-  ];
+  const tiles =
+    grid.querySelectorAll(
+      ".photo-tile"
+    );
 
-  const gridRect =
-    grid.getBoundingClientRect();
+  tiles.forEach(
+    (tile, index) => {
 
-  tiles.forEach((tile) => {
+      tile.classList.remove(
+        "wave"
+      );
 
-    const rect =
-      tile.getBoundingClientRect();
+      void tile.offsetWidth;
 
-    const horizontalPosition =
-      rect.left - gridRect.left;
+      const column =
+        index % columns;
 
-    const delay =
-      horizontalPosition * 1.2;
+      tile.style.animationDelay =
+        `${column * 45}ms`;
 
-    tile.classList.remove("wave");
+      tile.classList.add(
+        "wave"
+      );
 
-    void tile.offsetWidth;
+      setTimeout(() => {
 
-    tile.style.animationDelay =
-      `${delay}ms`;
+        tile.classList.remove(
+          "wave"
+        );
 
-    tile.classList.add("wave");
+        tile.style.animationDelay =
+          "";
 
-    setTimeout(() => {
+      }, 1200);
 
-      tile.classList.remove("wave");
-
-      tile.style.animationDelay = "";
-
-    }, delay + 1000);
-
-  });
+    }
+  );
 }
 
 
 // ==========================================
-// BUILD CHECKERBOARD GRID
+// BUILD CHECKERBOARD
 // ==========================================
 
-if (grid) {
+function buildGrid() {
+
+  if (!grid) return;
+
+  grid.innerHTML = "";
 
   let photoIndex = 0;
+
 
   for (
     let row = 0;
@@ -234,28 +263,107 @@ if (grid) {
       col++
     ) {
 
-      // EMPTY CHECKERBOARD SQUARE
+
+      // ====================================
+      // WHITE TILE
+      // ====================================
 
       if ((row + col) % 2 !== 0) {
 
         const blank =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         blank.className =
-          "tile blank";
+          "tile blank interactive-blank";
 
-        blank.setAttribute(
-          "aria-hidden",
-          "true"
+
+        // FLIP CARD
+
+        const card =
+          document.createElement(
+            "div"
+          );
+
+        card.className =
+          "flip-card";
+
+
+        // WHITE FRONT
+
+        const front =
+          document.createElement(
+            "div"
+          );
+
+        front.className =
+          "flip-face flip-white";
+
+
+        // IMAGE BACK
+
+        const back =
+          document.createElement(
+            "div"
+          );
+
+        back.className =
+          "flip-face flip-image";
+
+
+        const backImage =
+          document.createElement(
+            "img"
+          );
+
+        // Temporary image.
+        // This gets changed when
+        // scrolling down.
+
+        backImage.src =
+          photos[0].src;
+
+        backImage.alt = "";
+
+
+        back.appendChild(
+          backImage
         );
 
-        grid.appendChild(blank);
+        card.appendChild(
+          front
+        );
+
+        card.appendChild(
+          back
+        );
+
+        blank.appendChild(
+          card
+        );
+
+
+        // Makes the flip travel
+        // vertically down the grid.
+
+        blank.style.setProperty(
+          "--flip-delay",
+          `${row * 35}ms`
+        );
+
+
+        grid.appendChild(
+          blank
+        );
 
         continue;
       }
 
 
-      // PHOTO
+      // ====================================
+      // NORMAL PHOTO TILE
+      // ====================================
 
       const photo =
         photos[photoIndex];
@@ -264,27 +372,29 @@ if (grid) {
         break;
       }
 
-      const currentNumber =
+
+      const number =
         String(photoIndex + 1)
           .padStart(2, "0");
+
 
       photoIndex++;
 
 
-      // BUTTON
-
       const button =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
 
       button.className =
-        "tile";
+        "tile photo-tile";
 
       button.type =
         "button";
 
       button.setAttribute(
         "aria-label",
-        `View photograph ${currentNumber}`
+        `View photograph ${number}`
       );
 
       button.setAttribute(
@@ -293,10 +403,10 @@ if (grid) {
       );
 
 
-      // IMAGE
-
       const image =
-        document.createElement("img");
+        document.createElement(
+          "img"
+        );
 
       image.src =
         photo.src;
@@ -309,23 +419,28 @@ if (grid) {
           : "eager";
 
 
-      // PHOTO NUMBER
+      const numberLabel =
+        document.createElement(
+          "span"
+        );
 
-      const number =
-        document.createElement("span");
-
-      number.className =
+      numberLabel.className =
         "photo-number";
 
-      number.textContent =
-        currentNumber;
+      numberLabel.textContent =
+        number;
 
 
-      button.appendChild(image);
-      button.appendChild(number);
+      button.appendChild(
+        image
+      );
+
+      button.appendChild(
+        numberLabel
+      );
 
 
-      // HOVER PHOTO
+      // HOVER
 
       button.addEventListener(
         "mouseenter",
@@ -337,19 +452,19 @@ if (grid) {
       );
 
 
-      // RETURN TO SELECTED PHOTO
-
       button.addEventListener(
         "mouseleave",
         () => {
 
-          showPhoto(selectedPhoto);
+          showPhoto(
+            selectedPhoto
+          );
 
         }
       );
 
 
-      // CLICK PHOTO
+      // CLICK
 
       button.addEventListener(
         "click",
@@ -366,10 +481,10 @@ if (grid) {
       );
 
 
-      grid.appendChild(button);
+      grid.appendChild(
+        button
+      );
 
-
-      // SELECT FIRST IMAGE
 
       if (photoIndex === 1) {
 
@@ -377,27 +492,288 @@ if (grid) {
           photo,
           button
         );
-
       }
-
     }
   }
 }
 
 
+buildGrid();
+
+
 // ==========================================
-// STITCH SCROLL INDICATOR
+// GET ALL WHITE TILES
 // ==========================================
 
-const archiveSection =
-  document.querySelector(".archive");
+const whiteTiles =
+  grid
+    ? [
+        ...grid.querySelectorAll(
+          ".interactive-blank"
+        )
+      ]
+    : [];
 
-const stitchTrack =
-  document.querySelector(".stitch-scroll");
 
-const stitchLine =
-  document.querySelector(".stitch-line");
+// ==========================================
+// FLIP STATE
+// ==========================================
 
+let showingImages = false;
+
+
+// Remember the previous photo so we
+// don't immediately choose it again.
+
+let previousRandomIndex = -1;
+
+
+// ==========================================
+// CHOOSE ONE RANDOM PHOTO
+// ==========================================
+
+function chooseRandomPhoto() {
+
+  let randomIndex;
+
+
+  do {
+
+    randomIndex =
+      Math.floor(
+        Math.random() *
+        photos.length
+      );
+
+  } while (
+    randomIndex ===
+      previousRandomIndex &&
+    photos.length > 1
+  );
+
+
+  previousRandomIndex =
+    randomIndex;
+
+
+  return photos[randomIndex];
+}
+
+
+// ==========================================
+// SCROLL DOWN
+// ONE PHOTO → EVERY WHITE TILE
+// ==========================================
+
+function showHiddenImages() {
+
+  // Don't change the image while
+  // it is already visible.
+
+  if (showingImages) {
+    return;
+  }
+
+
+  // Choose ONE photo.
+
+  const chosenPhoto =
+    chooseRandomPhoto();
+
+
+  // Put EXACTLY THE SAME PHOTO
+  // inside EVERY white tile.
+
+  whiteTiles.forEach(
+    (tile) => {
+
+      const image =
+        tile.querySelector(
+          ".flip-image img"
+        );
+
+
+      if (image) {
+
+        image.src =
+          chosenPhoto.src;
+
+      }
+
+    }
+  );
+
+
+  // Flip all white tiles.
+
+  requestAnimationFrame(
+    () => {
+
+      whiteTiles.forEach(
+        (tile) => {
+
+          tile.classList.add(
+            "show-image"
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  showingImages = true;
+}
+
+
+// ==========================================
+// SCROLL UP
+// IMAGE → WHITE
+// ==========================================
+
+function showWhiteTiles() {
+
+  if (!showingImages) {
+    return;
+  }
+
+
+  whiteTiles.forEach(
+    (tile) => {
+
+      tile.classList.remove(
+        "show-image"
+      );
+
+    }
+  );
+
+
+  showingImages = false;
+}
+
+
+// ==========================================
+// SCROLL DIRECTION
+// ==========================================
+
+let lastScrollTop =
+  archiveSection
+    ? archiveSection.scrollTop
+    : 0;
+
+
+// We require a little movement before
+// changing state. This prevents a
+// sensitive trackpad from flickering.
+
+let accumulatedScroll = 0;
+
+let lastDirection = null;
+
+const flipThreshold = 30;
+
+
+// ==========================================
+// HANDLE SCROLL
+// ==========================================
+
+function handleFlipScroll() {
+
+  if (!archiveSection) {
+    return;
+  }
+
+
+  const currentScrollTop =
+    archiveSection.scrollTop;
+
+
+  const difference =
+    currentScrollTop -
+    lastScrollTop;
+
+
+  // No movement.
+
+  if (difference === 0) {
+    return;
+  }
+
+
+  const direction =
+    difference > 0
+      ? "down"
+      : "up";
+
+
+  // If user changes direction,
+  // reset the movement counter.
+
+  if (
+    direction !==
+    lastDirection
+  ) {
+
+    accumulatedScroll = 0;
+
+    lastDirection =
+      direction;
+  }
+
+
+  accumulatedScroll +=
+    Math.abs(difference);
+
+
+  // Wait until user has actually
+  // moved enough.
+
+  if (
+    accumulatedScroll >=
+    flipThreshold
+  ) {
+
+
+    // DOWN
+    // Choose a new image.
+
+    if (
+      direction === "down" &&
+      !showingImages
+    ) {
+
+      showHiddenImages();
+
+    }
+
+
+    // UP
+    // Return to white.
+
+    else if (
+      direction === "up" &&
+      showingImages
+    ) {
+
+      showWhiteTiles();
+
+    }
+
+
+    accumulatedScroll = 0;
+  }
+
+
+  lastScrollTop =
+    currentScrollTop;
+}
+
+
+// ==========================================
+// STITCH SCROLL
+// ==========================================
 
 function updateStitchScroll() {
 
@@ -409,37 +785,55 @@ function updateStitchScroll() {
     return;
   }
 
+
   const maxScroll =
     archiveSection.scrollHeight -
     archiveSection.clientHeight;
 
+
   if (maxScroll <= 0) {
 
-    stitchLine.style.top = "0px";
+    stitchLine.style.top =
+      "0px";
 
     return;
   }
+
 
   const progress =
     archiveSection.scrollTop /
     maxScroll;
 
+
   const maxMovement =
     stitchTrack.clientHeight -
     stitchLine.offsetHeight;
+
 
   stitchLine.style.top =
     `${progress * maxMovement}px`;
 }
 
 
+// ==========================================
+// ONE SCROLL LISTENER
+// ==========================================
+
 if (archiveSection) {
 
   archiveSection.addEventListener(
     "scroll",
-    updateStitchScroll
-  );
+    () => {
 
+      handleFlipScroll();
+
+      updateStitchScroll();
+
+    },
+    {
+      passive: true
+    }
+  );
 }
 
 
@@ -453,15 +847,22 @@ updateStitchScroll();
 
 
 // ==========================================
-// LOADING ANIMATION
+// LOADER
 // ==========================================
 
-const loaderPhotoCount = 44;
+const loaderPhotoCount =
+  Math.min(
+    44,
+    photos.length
+  );
+
 
 const introImages = [];
 
 
-// CREATE LOADER IMAGES
+// ==========================================
+// CREATE LOADER PHOTOS
+// ==========================================
 
 if (loaderPhotos) {
 
@@ -472,7 +873,10 @@ if (loaderPhotos) {
   ) {
 
     const image =
-      document.createElement("img");
+      document.createElement(
+        "img"
+      );
+
 
     image.src =
       photos[i].src;
@@ -482,15 +886,21 @@ if (loaderPhotos) {
     image.className =
       "loader-photo";
 
-    loaderPhotos.appendChild(image);
 
-    introImages.push(image);
+    loaderPhotos.appendChild(
+      image
+    );
+
+
+    introImages.push(
+      image
+    );
   }
 }
 
 
 // ==========================================
-// MESSY PHOTO PILE
+// PILE POSITIONS
 // ==========================================
 
 const pilePositions = [
@@ -546,11 +956,12 @@ const pilePositions = [
   {x:42,y:59,w:48,h:64,r:8},
   {x:58,y:59,w:50,h:66,r:-9},
   {x:51,y:69,w:48,h:64,r:7}
+
 ];
 
 
 // ==========================================
-// MIMI LETTER PATTERN
+// MIMI PATTERN
 // ==========================================
 
 const mimiPattern = [
@@ -558,22 +969,17 @@ const mimiPattern = [
   // M
   [0,0],
   [4,0],
-
   [0,1],
   [1,1],
   [3,1],
   [4,1],
-
   [0,2],
   [2,2],
   [4,2],
-
   [0,3],
   [4,3],
-
   [0,4],
   [4,4],
-
 
   // I
   [6,0],
@@ -582,26 +988,20 @@ const mimiPattern = [
   [6,3],
   [6,4],
 
-
   // M
   [8,0],
   [12,0],
-
   [8,1],
   [9,1],
   [11,1],
   [12,1],
-
   [8,2],
   [10,2],
   [12,2],
-
   [8,3],
   [12,3],
-
   [8,4],
   [12,4],
-
 
   // I
   [14,0],
@@ -614,7 +1014,7 @@ const mimiPattern = [
 
 
 // ==========================================
-// CALCULATE MIMI POSITION
+// MIMI POSITIONS
 // ==========================================
 
 function getMimiPositions() {
@@ -622,31 +1022,39 @@ function getMimiPositions() {
   const tileWidth = 48;
   const tileHeight = 62;
 
-  const columns = 15;
-  const rows = 5;
-
   const wordWidth =
-    columns * tileWidth;
+    15 * tileWidth;
 
   const wordHeight =
-    rows * tileHeight;
+    5 * tileHeight;
+
 
   const startX =
-    (window.innerWidth - wordWidth) / 2;
+    (
+      window.innerWidth -
+      wordWidth
+    ) / 2;
+
 
   const startY =
-    (window.innerHeight - wordHeight) / 2;
+    (
+      window.innerHeight -
+      wordHeight
+    ) / 2;
+
 
   return mimiPattern.map(
     ([column, row]) => ({
 
       x:
         startX +
-        column * tileWidth,
+        column *
+        tileWidth,
 
       y:
         startY +
-        row * tileHeight,
+        row *
+        tileHeight,
 
       w:
         tileWidth,
@@ -668,13 +1076,20 @@ function prepareLoader() {
   introImages.forEach(
     (image, index) => {
 
-      image.style.left = "50%";
-      image.style.top = "50%";
+      image.style.left =
+        "50%";
 
-      image.style.width = "30px";
-      image.style.height = "40px";
+      image.style.top =
+        "50%";
 
-      image.style.opacity = "0";
+      image.style.width =
+        "30px";
+
+      image.style.height =
+        "40px";
+
+      image.style.opacity =
+        "0";
 
       image.style.zIndex =
         String(index);
@@ -687,7 +1102,7 @@ function prepareLoader() {
 
 
 // ==========================================
-// BUILD MESSY PILE
+// BUILD PILE
 // ==========================================
 
 function buildPile() {
@@ -696,8 +1111,8 @@ function buildPile() {
 
     loadingText.textContent =
       "LOADING ARCHIVE";
-
   }
+
 
   introImages.forEach(
     (image, index) => {
@@ -707,37 +1122,34 @@ function buildPile() {
 
       if (!p) return;
 
-      setTimeout(
-        () => {
 
-          image.style.left =
-            `${p.x}%`;
+      setTimeout(() => {
 
-          image.style.top =
-            `${p.y}%`;
+        image.style.left =
+          `${p.x}%`;
 
-          image.style.width =
-            `${p.w}px`;
+        image.style.top =
+          `${p.y}%`;
 
-          image.style.height =
-            `${p.h}px`;
+        image.style.width =
+          `${p.w}px`;
 
-          image.style.opacity =
-            "1";
+        image.style.height =
+          `${p.h}px`;
 
-          image.style.transform =
-            `translate(-50%, -50%) rotate(${p.r}deg) scale(1)`;
+        image.style.opacity =
+          "1";
 
-          image.style.zIndex =
-            String(
-              1 +
-              ((index * 7) % 30)
-            );
+        image.style.zIndex =
+          String(
+            1 +
+            ((index * 7) % 30)
+          );
 
-        },
+        image.style.transform =
+          `translate(-50%, -50%) rotate(${p.r}deg) scale(1)`;
 
-        index * 32
-      );
+      }, index * 32);
 
     }
   );
@@ -754,11 +1166,12 @@ function formMimi() {
 
     loadingText.textContent =
       "ORGANIZING";
-
   }
+
 
   const positions =
     getMimiPositions();
+
 
   introImages.forEach(
     (image, index) => {
@@ -766,12 +1179,15 @@ function formMimi() {
       const p =
         positions[index];
 
+
       if (!p) {
 
-        image.style.opacity = "0";
+        image.style.opacity =
+          "0";
 
         return;
       }
+
 
       image.style.left =
         `${p.x}px`;
@@ -793,14 +1209,13 @@ function formMimi() {
 
       image.style.transform =
         "translate(0, 0) rotate(0deg) scale(1)";
-
     }
   );
 }
 
 
 // ==========================================
-// BREAK MIMI APART
+// BREAK APART
 // ==========================================
 
 function breakApart() {
@@ -809,8 +1224,8 @@ function breakApart() {
 
     loadingText.textContent =
       "52 MOMENTS";
-
   }
+
 
   introImages.forEach(
     (image, index) => {
@@ -820,18 +1235,28 @@ function breakApart() {
           ? -1
           : 1;
 
+
       const x =
         50 +
         side *
-        (30 + Math.random() * 35);
+        (
+          30 +
+          Math.random() *
+          35
+        );
+
 
       const y =
         10 +
-        Math.random() * 80;
+        Math.random() *
+        80;
+
 
       const rotation =
         -20 +
-        Math.random() * 40;
+        Math.random() *
+        40;
+
 
       image.style.left =
         `${x}%`;
@@ -839,19 +1264,18 @@ function breakApart() {
       image.style.top =
         `${y}%`;
 
-      image.style.transform =
-        `translate(-50%, -50%) rotate(${rotation}deg) scale(.65)`;
-
       image.style.opacity =
         "0";
 
+      image.style.transform =
+        `translate(-50%, -50%) rotate(${rotation}deg) scale(.65)`;
     }
   );
 }
 
 
 // ==========================================
-// SHOW MAIN PAGE
+// FINISH LOADER
 // ==========================================
 
 function finishLoader() {
@@ -865,39 +1289,36 @@ function finishLoader() {
 
 
 // ==========================================
-// RUN LOADING ANIMATION
+// RUN LOADER
 // ==========================================
 
 function runLoader() {
 
-  // If loader isn't on the page,
-  // don't run loader animation.
-
-  if (!loader || !loaderPhotos) {
+  if (
+    !loader ||
+    !loaderPhotos
+  ) {
     return;
   }
 
+
   prepareLoader();
 
-  // Messy pile
   setTimeout(
     buildPile,
     300
   );
 
-  // Form MIMI
   setTimeout(
     formMimi,
     2200
   );
 
-  // Quickly scatter
   setTimeout(
     breakApart,
     3500
   );
 
-  // Reveal main gallery
   setTimeout(
     finishLoader,
     4100
