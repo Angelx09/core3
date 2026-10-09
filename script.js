@@ -8,14 +8,58 @@
 // ==========================================
 
 const captions = [
-  "Is childhood, then, so all divine?",
-  "Or, Memory, is the glory thine",
-  "As from the house your mother sees",
-  "You playing round the garden trees.",
-  "The eye of the hale one, With joy in its glem, Looks up in the noontide, And steals from the beam;",
-  "Babies do not want to hear about babies; they like to be told of ginats and castles.",
-  ""
-
+  "Babies do not want to hear about babies; they like to be told of giants and castles.",
+  "The world must look different from down there.",
+  "I imagine I am a snail leaving magic everywhere I go.",
+  "Everything is worth looking at twice.",
+  "I am a child of wonder again.",
+  "You find something extraordinary in everything ordinary.",
+  "A sea beneath a cloudless sun.",
+  "The smallest things hold your attention the longest.",
+  "I wonder what the world looks like through your eyes.",
+  "You make me curious about things I thought I already knew.",
+  "There is a Smile of Love.",
+  "Some feelings arrive before words do.",
+  "A face that says everything and nothing.",
+  "You have not learned to hide your feelings yet.",
+  "Your laughter always arrives before I expect it.",
+  "I wish happiness could always be this simple.",
+  "A little face carrying a very big feeling.",
+  "Sometimes I don't know what you're trying to tell me.",
+  "I have learned to listen to your expressions.",
+  "You, so slow to know what you know and don't know.",
+  "You are growing faster than I can remember.",
+  "Which childhood? The one from which you'll never escape?",
+  "I wonder which moments you will remember.",
+  "Every day, you become a little more yourself.",
+  "You will never be this small again.",
+  "One day, you won't need my hand to cross the street.",
+  "I keep taking pictures as though I could slow down time.",
+  "I am watching you grow while learning how to grow myself.",
+  "The photographs whispered to each other from their frames in the hallway.",
+  "I take photographs because I know I will forget.",
+  "What is it in us that lives in the future and longs for the past?",
+  "You won't remember this afternoon, but I will.",
+  "One came the way that I came—and wore my past year's gown.",
+  "A photograph is a way of asking a moment to stay.",
+  "I wonder whether you will recognize yourself in these pictures.",
+  "Is childhood, then, so all divine? Or, Memory, is the glory thine?",
+  "Today is far from childhood.",
+  "I once held my sister's hand the way you now hold mine.",
+  "I used to be the one who needed looking after.",
+  "Sometimes love feels like responsibility.",
+  "I have managed to poem all my pain; tell me, what do you do with yours?",
+  "There are things about growing up that I never learned to say.",
+  "I see my sister in you, and sometimes I see myself.",
+  "Somehow, caring for you has changed the way I remember being cared for.",
+  "And what is the future, happy one?",
+  "There is so much you have yet to discover.",
+  "I wonder what kind of person you will become.",
+  "One day, these photographs will belong to a version of you I haven't met.",
+  "I hope the world stays gentle with you.",
+  "You will outgrow my arms, but never these photographs.",
+  "Perhaps this archive is as much about me as it is about you.",
+  "For now, you are here. And I am looking."
 ];
 
 
@@ -781,43 +825,37 @@ function handleFlipScroll() {
 
 function updateStitchScroll() {
 
-  if (
-    !archiveSection ||
-    !stitchTrack ||
-    !stitchLine
-  ) {
-    return;
-  }
+  if (!archiveSection) return;
 
+  const stitchGroups =
+    document.querySelectorAll(".stitch-group");
+
+  if (stitchGroups.length !== 2) return;
 
   const maxScroll =
     archiveSection.scrollHeight -
     archiveSection.clientHeight;
 
-
-  if (maxScroll <= 0) {
-
-    stitchLine.style.top =
-      "0px";
-
-    return;
-  }
-
-
   const progress =
-    archiveSection.scrollTop /
-    maxScroll;
+    maxScroll > 0
+      ? archiveSection.scrollTop / maxScroll
+      : 0;
 
+  // First half = first group active
+  // Second half = second group active
 
-  const maxMovement =
-    stitchTrack.clientHeight -
-    stitchLine.offsetHeight;
+  const activeIndex =
+    progress < 0.5 ? 0 : 1;
 
+  stitchGroups.forEach((group, index) => {
 
-  stitchLine.style.top =
-    `${progress * maxMovement}px`;
+    group.classList.toggle(
+      "active",
+      index === activeIndex
+    );
+
+  });
 }
-
 
 // ==========================================
 // ONE SCROLL LISTENER

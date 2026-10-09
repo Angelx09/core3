@@ -338,64 +338,76 @@ body {
    RIGHT VIEWER
 ========================================== */
 
-.viewer {
-  width: 42%;
+/* RIGHT VIEWER — CENTERED */
 
+.viewer {
+  width: 50%;
   height: 100%;
 
-  margin-left: 8%;
+  margin-left: 0;
+  padding: 30px;
 
   position: relative;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
-  padding: 30px;
-
   background: white;
+  box-sizing: border-box;
 }
-
-
 
 /* ==========================================
    FEATURED PHOTO
 ========================================== */
 
-.selected-photo {
-  width:
-    min(100%, 370px);
+/* RIGHT-SIDE IMAGE + CAPTION */
 
-  margin: 0;
-}
-
-
-.selected-photo img {
-  display: block;
+.featured-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   width: 100%;
+  height: 100%;
 
-  max-height: 63dvh;
+  margin: 0;
+  padding: 0;
+}
+
+/* IMAGE */
+
+#featured-image {
+  display: block;
+
+  width: auto;
+  height: auto;
+
+  max-width: 85%;
+  max-height: 65vh;
 
   object-fit: contain;
 
-  object-position: center;
+  margin: 0 auto;
 }
 
+/* CAPTION */
 
-.selected-photo figcaption {
-  margin-top: 22px;
+#featured-caption {
+  width: 85%;
+  max-width: 500px;
 
+  margin: 16px auto 0;
+  padding: 0;
+
+  text-align: center;
+
+  font-family: "EB Garamond", Georgia, serif;
   font-size: 16px;
-
-  line-height: 1.45;
-
-  white-space: pre-line;
+  font-style: italic;
+  line-height: 1.4;
 }
-
-
-
 /* ==========================================
    BOOK LINK
 ========================================== */
@@ -1077,4 +1089,641 @@ body {
 
 .interactive-blank.show-image .flip-card {
   transform: rotateX(180deg);
+}
+/* ==========================================
+   ABOUT DESCRIPTION SECTION
+========================================== */
+
+.about-description {
+  position: relative;
+  z-index: 20;
+
+  width: 100%;
+  min-height: 100vh;
+
+  background: #ffffff;
+  color: #111111;
+
+  box-sizing: border-box;
+
+  padding: 60px 6% 50px;
+}
+
+
+/* CONTENT CONTAINER */
+
+.about-description-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+
+/* SMALL TOP LABELS */
+
+.about-description-header {
+  display: flex;
+  justify-content: space-between;
+
+  font-family: "neue-haas-unica", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+
+  letter-spacing: 0.05em;
+}
+
+
+/* MAIN TITLE */
+
+.about-description h1 {
+  margin: 100px 0 10px;
+
+  font-family: "neue-haas-unica", sans-serif;
+  font-size: clamp(80px, 15vw, 220px);
+  font-weight: 400;
+
+  line-height: 0.85;
+  letter-spacing: -0.08em;
+}
+
+
+/* SUBTITLE */
+
+.about-description h2 {
+  margin: 25px 0 80px;
+
+  font-family: "neue-haas-unica", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+
+/* PARAGRAPH CONTAINER */
+
+.about-description-text {
+  width: 100%;
+  max-width: 550px;
+
+  margin-left: auto;
+  margin-bottom: 120px;
+}
+
+
+/* PARAGRAPHS */
+
+.about-description-text p {
+  margin: 0 0 25px;
+
+  font-family: "neue-haas-unica", sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+
+  line-height: 1.65;
+}
+
+
+/* BOTTOM LABELS */
+
+.about-description-footer {
+  display: flex;
+  justify-content: space-between;
+
+  border-top: 1px solid #111;
+
+  padding-top: 15px;
+
+  font-family: "neue-haas-unica", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+
+  letter-spacing: 0.04em;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .about-description {
+    padding: 40px 6%;
+  }
+
+  .about-description h1 {
+    margin-top: 90px;
+  }
+
+  .about-description h2 {
+    margin-bottom: 70px;
+  }
+
+  .about-description-text {
+    max-width: 100%;
+    margin-bottom: 80px;
+  }
+
+  .about-description-text p {
+    font-size: 14px;
+  }
+
+  .about-description-footer {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+body:has(.about-description) {
+  height: auto;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* ==========================================
+   TWO GROUP STITCH SCROLLBAR
+========================================== */
+
+.stitch-scroll {
+  position: fixed !important;
+
+  left: 50% !important;
+  top: 50% !important;
+
+  transform: translate(-50%, -50%) !important;
+
+  width: 100px;
+  height: 300px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 180px;
+
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* EACH GROUP */
+
+.stitch-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 20px;
+}
+
+/* INDIVIDUAL STITCH */
+
+.stitch-group span {
+  display: block;
+
+  width: 5px;
+  height: 50px;
+
+  background: #cccccc;
+
+  border-radius: 4px;
+
+  transition:
+    background-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+/* ACTIVE GROUP */
+
+.stitch-group.active span {
+  background: #222222;
+
+  box-shadow:
+    1px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+/* SOFT BOOK SPINE SHADOW */
+
+.stitch-scroll::before {
+  content: "";
+
+  position: absolute;
+  z-index: -1;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 35px;
+  height: 340px;
+
+  background: radial-gradient(
+    ellipse,
+    rgba(0, 0, 0, 0.10),
+    transparent 70%
+  );
+
+  filter: blur(9px);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+/* PHOTO CAPTIONS */
+
+#featured-caption {
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: 20px;
+  font-weight: 350;
+  font-style: italic;
+
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+
+  color: #292929;
+  max-width: 440px;
+}
+
+/* ==========================================
+   MIDORI — ABOUT DESCRIPTION
+========================================== */
+
+.about-description {
+  position: relative;
+  z-index: 20;
+
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: auto;
+
+  box-sizing: border-box;
+  background: #ffffff;
+  color: #111111;
+
+  padding: 45px 6%;
+
+  display: flex;
+  align-items: center;
+
+  scroll-snap-align: start;
+}
+
+.about-description-inner {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOP LABELS */
+
+.about-description-header {
+  display: flex;
+  justify-content: space-between;
+
+  font-family: "neue-haas-unica", Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* TITLE */
+
+.about-title {
+  margin-top: 45px;
+}
+
+.about-description .about-title h1 {
+  margin: 0;
+
+  font-family: "neue-haas-unica", Arial, sans-serif;
+  font-size: clamp(75px, 11vw, 165px);
+  font-weight: 400;
+
+  line-height: 0.9;
+  letter-spacing: -0.075em;
+}
+
+.about-description .about-title h2 {
+  margin: 20px 0 0;
+
+  font-family: "neue-haas-unica", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* ==========================================
+   TWO-COLUMN LAYOUT
+========================================== */
+
+.about-content-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+  column-gap: 8%;
+  align-items: start;
+
+  width: 100%;
+  margin-top: 55px;
+}
+
+/* ==========================================
+   LEFT — ANIMATED PHOTO
+========================================== */
+
+.about-content-row .about-photo-animation {
+  position: relative;
+
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+
+  margin: 0;
+  padding: 0;
+}
+
+/* PHOTO FRAME */
+
+.about-content-row .about-photo-stack {
+  position: relative;
+
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+
+  overflow: hidden;
+  background: #f3f3f3;
+}
+
+/* ANIMATED IMAGES */
+
+.about-content-row .about-frame {
+  position: absolute;
+  inset: 0;
+
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  opacity: 0;
+
+  animation: midoriPhotoCycle 12s linear infinite;
+}
+
+.about-content-row .about-frame:nth-child(1) {
+  animation-delay: -1s;
+}
+
+.about-content-row .about-frame:nth-child(2) {
+  animation-delay: 2s;
+}
+
+.about-content-row .about-frame:nth-child(3) {
+  animation-delay: 5s;
+}
+
+.about-content-row .about-frame:nth-child(4) {
+  animation-delay: 8s;
+}
+
+/* PHOTO ANIMATION */
+
+@keyframes midoriPhotoCycle {
+  0% {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+
+  8% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  22% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  25%, 100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* PHOTO LABEL */
+
+.about-photo-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-top: 12px;
+
+  font-family: "neue-haas-unica", Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.03em;
+
+  color: #555555;
+}
+
+/* ==========================================
+   RIGHT — DESCRIPTION TEXT
+========================================== */
+
+.about-content-row .about-description-text {
+  width: 100%;
+  max-width: 540px;
+
+  margin: 0;
+  padding: 0;
+
+  align-self: start;
+}
+
+.about-content-row .about-description-text p {
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: 19px;
+  font-weight: 400;
+  font-style: normal;
+
+  line-height: 1.45;
+  letter-spacing: 0;
+
+  color: #222222;
+
+  margin: 0 0 22px;
+}
+
+.about-content-row .about-description-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.about-description-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  width: 100%;
+
+  margin-top: 55px;
+  padding-top: 15px;
+
+  border-top: 1px solid #222222;
+
+  font-family: "neue-haas-unica", Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 768px) {
+
+  .about-description {
+    padding: 35px 6%;
+  }
+
+  .about-title {
+    margin-top: 65px;
+  }
+
+  .about-description .about-title h1 {
+    font-size: clamp(65px, 15vw, 110px);
+  }
+
+  .about-description .about-title h2 {
+    font-size: 14px;
+  }
+
+  .about-content-row {
+    grid-template-columns: 1fr;
+    row-gap: 35px;
+    margin-top: 45px;
+  }
+
+  .about-content-row .about-photo-animation {
+    max-width: 280px;
+  }
+
+  .about-content-row .about-description-text {
+    max-width: 100%;
+  }
+
+  .about-content-row .about-description-text p {
+    font-size: 18px;
+  }
+
+  .about-description-footer {
+    flex-wrap: wrap;
+    margin-top: 50px;
+  }
+}
+
+/* ACCESSIBLE ANIMATION */
+
+@media (prefers-reduced-motion: reduce) {
+  .about-content-row .about-frame {
+    animation: none;
+    opacity: 0;
+  }
+
+  .about-content-row .about-frame:first-child {
+    opacity: 1;
+  }
+}
+/* =====================================
+   FIX FULL-SCREEN WHITE DESCRIPTION
+===================================== */
+
+html:has(.about-description) {
+  scroll-snap-type: y proximity;
+  scroll-padding-top: 0;
+}
+
+body:has(.about-description) {
+  height: auto !important;
+  min-height: 100vh !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+/* White description fills the viewport */
+
+.about-description {
+  position: relative !important;
+
+  width: 100% !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  height: auto !important;
+
+  box-sizing: border-box !important;
+
+  background: #ffffff !important;
+
+  padding: 40px 6% !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* Keep the content within the screen width */
+
+.about-description-inner {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+/* FEATURED IMAGE + CAPTION ALIGNMENT */
+
+.featured-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+#featured-image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 65vh;
+  height: auto;
+  object-fit: contain;
+}
+
+#featured-caption {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  margin: 16px 0 0;
+  padding: 0;
+
+  text-align: center;
+
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.4;
 }
