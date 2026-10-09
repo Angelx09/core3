@@ -8,10 +8,14 @@
 // ==========================================
 
 const captions = [
-  "An expression, a moment, a memory.",
-  "The little things I never want to forget.",
-  "A face that says more than words.",
-  "MiMi"
+  "Is childhood, then, so all divine?",
+  "Or, Memory, is the glory thine",
+  "As from the house your mother sees",
+  "You playing round the garden trees.",
+  "The eye of the hale one, With joy in its glem, Looks up in the noontide, And steals from the beam;",
+  "Babies do not want to hear about babies; they like to be told of ginats and castles.",
+  ""
+
 ];
 
 
